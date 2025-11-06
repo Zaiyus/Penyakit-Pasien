@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Record Generator - Faskes MANDREHE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+        }
+        
+        .disease-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            margin-right: 10px;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-badge.success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-badge.warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-badge.info {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-indigo-100 p-2 rounded-lg">
+                        <i class="fas fa-file-medical text-indigo-600 text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Medical Record Generator</h1>
+                        <p class="text-gray-600 text-sm">Faskes MANDREHE (04990002) | Poli Umum</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center space-x-2 text-gray-600">
+                        <i class="fas fa-user-md"></i>
+                        <span>Dr. Andi Pratama, Sp.PD</span>
+                    </div>
+                    <div class="bg-indigo-50 px-3 py-1 rounded-full">
+                        <span class="text-indigo-700 font-medium">v2.1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Main Dashboard -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Left Column -->
+            <div class="lg:col-span-2">
+                <!-- Welcome Card -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-bold text-gray-800">Selamat Datang</h2>
+                        <div class="flex space-x-2">
+                            <div class="status-badge success">
+                                <i class="fas fa-check-circle mr-1"></i>
+                                <span>Aktif</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">Sistem ini membantu Anda membuat rekam medis secara otomatis untuk berbagai penyakit ringan. Pilih penyakit dan tanggal kunjungan, lalu klik tombol Generate.</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <span>Data rekam medis akan di-generate secara acak berdasarkan pilihan penyakit</span>
+                    </div>
+                </div>
+
+                <!-- Disease Selection Card -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-6 card-hover">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Pilih Penyakit</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="disease-option" data-disease="dispepsia">
+                            <div class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 transition-colors">
+                                <div class="disease-icon bg-red-100">
+                                    <i class="fas fa-stomach text-red-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">Dispepsia</h3>
+                                    <p class="text-sm text-gray-600">Gangguan pencernaan</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="disease-option" data-disease="demam">
+                            <div class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 transition-colors">
+                                <div class="disease-icon bg-orange-100">
+                                    <i class="fas fa-thermometer-half text-orange-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">Demam Ringan</h3>
+                                    <p class="text-sm text-gray-600">Peningkatan suhu tubuh</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="disease-option" data-disease="batuk">
+                            <div class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 transition-colors">
+                                <div class="disease-icon bg-blue-100">
+                                    <i class="fas fa-lungs text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">Batuk Ringan</h3>
+                                    <p class="text-sm text-gray-600">Gangguan pernapasan</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="disease-option" data-disease="pilek">
+                            <div class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 transition-colors">
+                                <div class="disease-icon bg-cyan-100">
+                                    <i class="fas fa-wind text-cyan-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">Pilek (Rhinitis)</h3>
+                                    <p class="text-sm text-gray-600">Gangguan hidung</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="disease-option" data-disease="sakit_kepala">
+                            <div class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 transition-colors">
+                                <div class="disease-icon bg-purple-100">
+                                    <i class="fas fa-head-side-virus text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">Sakit Kepala Ringan</h3>
+                                    <p class="text-sm text-gray-600">Cephalgia</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="disease-option" data-disease="mual">
+                            <div class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 transition-colors">
+                                <div class="disease-icon bg-yellow-100">
+                                    <i class="fas fa-procedures text-yellow-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">Mual</h3>
+                                    <p class="text-sm text-gray-600">Nausea</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="disease-option" data-disease="pegal_linu">
+                            <div class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 transition-colors">
+                                <div class="disease-icon bg-green-100">
+                                    <i class="fas fa-running text-green-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">Pegal Linu</h3>
+                                    <p class="text-sm text-gray-600">Myalgia</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="disease-option" data-disease="gatal">
+                            <div class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 transition-colors">
+                                <div class="disease-icon bg-pink-100">
+                                    <i class="fas fa-allergies text-pink-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">Gatal-gatal Ringan</h3>
+                                    <p class="text-sm text-gray-600">Pruritus</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="disease-option" data-disease="masuk_angin">
+                            <div class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 transition-colors">
+                                <div class="disease-icon bg-indigo-100">
+                                    <i class="fas fa-cloud-meatball text-indigo-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">Masuk Angin</h3>
+                                    <p class="text-sm text-gray-600">Malaise and Fatigue</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="disease-option" data-disease="mata_merah">
+                            <div class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 transition-colors">
+                                <div class="disease-icon bg-teal-100">
+                                    <i class="fas fa-eye text-teal-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">Mata Merah</h3>
+                                    <p class="text-sm text-gray-600">Konjungtivitis</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="lg:col-span-1">
+                <!-- Date and Generate Card -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-6 card-hover">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Detail Kunjungan</h2>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-calendar-alt mr-2"></i>Tanggal Kunjungan
+                        </label>
+                        <input type="date" id="visitDate" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors">
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-stethoscope mr-2"></i>Penyakit Terpilih
+                        </label>
+                        <div id="selectedDisease" class="p-3 bg-gray-100 rounded-lg text-gray-600 text-center">
+                            Belum ada penyakit dipilih
+                        </div>
+                        <select id="diseaseSelect" class="hidden">
+                            <option value="">-- Pilih Penyakit --</option>
+                            <option value="dispepsia">Dispepsia</option>
+                            <option value="demam">Demam Ringan</option>
+                            <option value="batuk">Batuk Ringan</option>
+                            <option value="pilek">Pilek (Rhinitis)</option>
+                            <option value="sakit_kepala">Sakit Kepala Ringan</option>
+                            <option value="mual">Mual</option>
+                            <option value="pegal_linu">Pegal Linu</option>
+                            <option value="gatal">Gatal-gatal Ringan</option>
+                            <option value="masuk_angin">Masuk Angin</option>
+                            <option value="mata_merah">Mata Merah</option>
+                        </select>
+                    </div>
+                    
+                    <button id="generateBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300 flex items-center justify-center gap-2 shadow-lg pulse">
+                        <i class="fas fa-file-medical-alt"></i>
+                        Generate Rekam Medis Baru
+                    </button>
+                    
+                    <div class="mt-4 text-center text-sm text-gray-500">
+                        <i class="fas fa-shield-alt mr-1"></i>
+                        Data pasien dijamin kerahasiaannya
+                    </div>
+                </div>
+
+                <!-- Statistics Card -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Statistik Hari Ini</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-file-medical text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Total Rekam Medis</p>
+                                    <p class="font-bold text-gray-800">24</p>
+                                </div>
+                            </div>
+                            <div class="status-badge info">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                <span>12%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="bg-green-100 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-user-injured text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Pasien Diperiksa</p>
+                                    <p class="font-bold text-gray-800">18</p>
+                                </div>
+                            </div>
+                            <div class="status-badge success">
+                                <i class="fas fa-check mr-1"></i>
+                                <span>Selesai</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="bg-yellow-100 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-clock text-yellow-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Rata-rata Waktu</p>
+                                    <p class="font-bold text-gray-800">15m</p>
+                                </div>
+                            </div>
+                            <div class="status-badge warning">
+                                <i class="fas fa-minus mr-1"></i>
+                                <span>3m</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Card (Hidden by default) -->
+        <div id="resultCard" class="bg-white rounded-xl shadow-lg p-6 hidden fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Hasil Rekam Medis</h2>
+                <div class="flex space-x-3">
+                    <button onclick="printRecord()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex items-center gap-2">
+                        <i class="fas fa-print"></i>
+                        Print
+                    </button>
+                    <button onclick="downloadRecord()" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex items-center gap-2">
+                        <i class="fas fa-download"></i>
+                        Download TXT
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-6" id="resultContent">
+                <!-- Content will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="bg-indigo-100 p-2 rounded-lg mr-3">
+                        <i class="fas fa-file-medical text-indigo-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800">Medical Record Generator</h3>
+                        <p class="text-sm text-gray-600">Faskes MANDREHE (04990002)</p>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    &copy; 2023 Faskes MANDREHE. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Set today's date as default
+        document.getElementById('visitDate').valueAsDate = new Date();
+
+        const diseases = {
+            dispepsia: {
+                name: 'Dispepsia',
+                diagnosis: 'Dispepsia (K30)',
+                complaints: [
+                    'Perut kembung, mual, tidak nyaman di ulu hati',
+                    'Nyeri ulu hati, perut terasa penuh, mual',
+                    'Perut kembung setelah makan, tidak nyaman di perut atas',
+                    'Mual, perut terasa begah, tidak nyaman di ulu hati',
+                    'Perut terasa penuh, kembung, kadang mual'
+                ],
+                anamnesa: [
+                    'Pasien mengeluh perut terasa kembung dan tidak nyaman di ulu hati sejak kemarin sore. Mual ringan terutama pagi hari. Tidak ada muntah. BAB normal. Pasien mengaku makan terlambat dan langsung tidur setelah makan malam kemarin.',
+                    'Pasien mengeluh nyeri di ulu hati sejak 2 hari yang lalu, perut terasa penuh setelah makan sedikit saja. Mual (+) terutama pagi hari. Tidak ada muntah. Keluhan muncul karena pasien sering makan tidak teratur dan terlalu cepat saat makan.',
+                    'Pasien mengeluh perut kembung dan tidak enak sejak kemarin, terutama setelah makan. Mual ringan, tidak ada muntah. BAB lancar. Pasien mengaku kemarin makan makanan pedas dan berminyak cukup banyak.',
+                    'Pasien mengeluh perut tidak nyaman di bagian ulu hati sejak 3 hari, terasa kembung dan mual. Keluhan memberat setelah minum kopi. Tidak ada muntah. Pasien sering telat makan dan konsumsi kopi berlebihan.',
+                    'Pasien mengeluh perut terasa begah dan kembung sejak kemarin siang. Mual ringan (+), tidak ada muntah. BAB normal. Keluhan muncul setelah pasien makan makanan bersantan dalam porsi besar saat acara keluarga.'
+                ],
+                medication: 'Antasida tablet 3x1 (sesudah makan), Domperidon 3x10mg (sebelum makan)',
+                nonMedication: 'Makan teratur 3x sehari, hindari makan terlalu kenyang, kurangi makanan pedas dan asam, jangan langsung tidur setelah makan',
+                prognosis: 'Bonam (Baik)'
+            },
+            demam: {
+                name: 'Demam Ringan',
+                diagnosis: 'Febris (R50.9)',
+                complaints: [
+                    'Badan hangat, sedikit lemas',
+                    'Demam ringan, badan terasa panas',
+                    'Badan panas, agak lemas, tidak enak badan',
+                    'Meriang, badan hangat dan lemas',
+                    'Demam ringan, badan terasa tidak fit'
+                ],
+                anamnesa: [
+                    'Pasien mengeluh badan terasa hangat sejak siang tadi, disertai sedikit lemas. Tidak ada batuk pilek. Tidak ada nyeri di bagian tubuh manapun. Nafsu makan masih baik. Pasien mengaku kemarin seharian beraktivitas di bawah terik matahari.',
+                    'Pasien mengeluh badan terasa panas sejak tadi pagi, disertai rasa lemas. Tidak ada batuk, pilek, atau keluhan lainnya. Nafsu makan sedikit menurun. Pasien mengaku kurang istirahat beberapa hari terakhir karena pekerjaan.',
+                    'Pasien mengeluh demam ringan sejak kemarin sore, badan terasa tidak enak dan agak lemas. Tidak ada batuk pilek. Tidak ada mual muntah. Pasien mengaku kemarin kehujanan saat pulang kerja.',
+                    'Pasien mengeluh badan meriang dan terasa hangat sejak semalam. Sedikit lemas tapi masih bisa beraktivitas. Tidak ada keluhan lain. Pasien tidur terlalu malam beberapa hari terakhir.',
+                    'Pasien mengeluh demam ringan sejak pagi ini, badan terasa panas dan tidak fit. Tidak ada batuk pilek atau nyeri. Nafsu makan masih ada. Pasien mengaku kecapekan setelah perjalanan jauh kemarin.'
+                ],
+                medication: 'Paracetamol 3x500mg (bila demam), Vitamin C 2x1 tablet',
+                nonMedication: 'Istirahat cukup, minum air putih banyak minimal 8 gelas sehari, kompres dengan air biasa bila terasa panas',
+                prognosis: 'Bonam (Baik)'
+            },
+            batuk: {
+                name: 'Batuk Ringan',
+                diagnosis: 'Batuk (R05)',
+                complaints: [
+                    'Batuk kering, tenggorokan sedikit gatal',
+                    'Batuk-batuk kering, tenggorokan tidak nyaman',
+                    'Batuk terutama malam hari, tenggorokan gatal',
+                    'Batuk kering yang mengganggu, tenggorokan gatal',
+                    'Batuk ringan, tenggorokan terasa kering dan gatal'
+                ],
+                anamnesa: [
+                    'Pasien mengeluh batuk kering sejak 2 hari yang lalu, tidak berdahak. Tenggorokan terasa sedikit gatal. Tidak ada demam. Tidak ada sesak nafas. Batuk terutama muncul saat malam hari. Pasien bekerja di ruangan ber-AC.',
+                    'Pasien mengeluh batuk kering sejak 3 hari lalu, tenggorokan terasa gatal dan kering. Tidak berdahak. Tidak ada demam atau sesak. Batuk lebih sering saat pagi dan malam. Pasien sering terpapar AC dan debu di tempat kerja.',
+                    'Pasien mengeluh batuk kering sejak kemarin, terutama mengganggu saat malam hari hingga sulit tidur. Tenggorokan gatal. Tidak ada demam. Tidak berdahak. Pasien mengaku banyak minum es dan minuman dingin kemarin.',
+                    'Pasien mengeluh batuk kering sejak 2 hari, tenggorokan terasa tidak nyaman dan gatal. Tidak ada dahak. Tidak ada demam atau pilek. Batuk muncul terutama saat berbicara lama. Pasien adalah guru yang banyak mengajar.',
+                    'Pasien mengeluh batuk ringan sejak 3 hari lalu, batuk kering tanpa dahak. Tenggorokan terasa kering dan sedikit gatal. Tidak ada demam. Batuk terutama saat bangun tidur dan malam hari. Pasien tidur dengan kipas angin langsung ke tubuh.'
+                ],
+                medication: 'OBH sirup 3x1 sendok makan, Lozenges 4x sehari (dihisap)',
+                nonMedication: 'Minum air hangat, hindari minuman dingin dan es, istirahat cukup, hindari paparan AC langsung',
+                prognosis: 'Bonam (Baik)'
+            },
+            pilek: {
+                name: 'Pilek (Rhinitis)',
+                diagnosis: 'Rhinitis (J31.0)',
+                complaints: [
+                    'Hidung berair, bersin-bersin',
+                    'Pilek, hidung meler, sering bersin',
+                    'Hidung berair terus, bersin-bersin pagi hari',
+                    'Hidung mampet dan berair, bersin',
+                    'Pilek encer, hidung tersumbat, bersin'
+                ],
+                anamnesa: [
+                    'Pasien mengeluh hidung berair dengan ingus encer dan bersin-bersin sejak pagi tadi. Hidung sedikit tersumbat. Tidak ada demam. Tidak ada batuk. Keluhan muncul setelah bangun tidur. Pasien tidur dengan kipas angin menyala semalam.',
+                    'Pasien mengeluh pilek sejak kemarin, hidung berair terus dengan ingus encer. Bersin-bersin terutama pagi hari. Hidung kadang tersumbat. Tidak ada demam atau batuk. Pasien mengaku tidur di ruangan ber-AC dingin semalam.',
+                    'Pasien mengeluh hidung meler sejak 2 hari lalu, ingus encer dan bening. Sering bersin terutama pagi hari saat bangun tidur. Hidung tersumbat ringan. Tidak ada demam. Pasien sering terpapar debu dan udara dingin AC.',
+                    'Pasien mengeluh hidung berair dan tersumbat sejak kemarin sore. Bersin-bersin cukup sering. Ingus encer berwarna bening. Tidak ada demam atau batuk. Keluhan muncul setelah pasien kehujanan kemarin.',
+                    'Pasien mengeluh pilek dengan hidung berair sejak pagi ini. Bersin-bersin banyak terutama saat bangun tidur. Hidung sedikit mampet. Tidak demam. Tidak batuk. Pasien tidur dengan jendela terbuka dan kena angin malam.'
+                ],
+                medication: 'CTM 3x4mg, Vitamin C 2x1 tablet',
+                nonMedication: 'Hindari udara dingin langsung, gunakan jaket atau selimut saat tidur, minum air hangat, istirahat cukup',
+                prognosis: 'Bonam (Baik)'
+            },
+            sakit_kepala: {
+                name: 'Sakit Kepala Ringan',
+                diagnosis: 'Cephalgia (R51)',
+                complaints: [
+                    'Kepala pusing, terasa berat',
+                    'Sakit kepala ringan, kepala terasa pegal',
+                    'Pusing, kepala terasa tegang',
+                    'Kepala nyeri ringan, terasa berat',
+                    'Sakit kepala, terasa seperti ditekan'
+                ],
+                anamnesa: [
+                    'Pasien mengeluh kepala terasa pusing dan berat sejak siang tadi. Pusing tidak berputar, hanya terasa berat di kepala bagian belakang. Tidak ada mual muntah. Pasien mengaku kurang tidur tadi malam karena begadang menyelesaikan pekerjaan.',
+                    'Pasien mengeluh sakit kepala ringan sejak pagi ini, terasa pegal di kepala bagian belakang dan tengkuk. Tidak ada mual atau muntah. Penglihatan normal. Pasien mengaku duduk terlalu lama di depan komputer kemarin seharian.',
+                    'Pasien mengeluh kepala terasa pusing dan tegang sejak siang tadi, terutama di dahi dan pelipis. Tidak berputar. Tidak ada mual. Pasien mengaku sedang banyak pikiran dan stress dengan pekerjaan.',
+                    'Pasien mengeluh kepala nyeri ringan sejak kemarin sore, terasa berat dan seperti ditekan. Tidak ada mual muntah. Penglihatan baik. Pasien kurang tidur beberapa hari terakhir dan jarang minum air putih.',
+                    'Pasien mengeluh sakit kepala sejak pagi ini, terasa tegang di bagian belakang kepala. Tidak berputar. Tidak ada mual. Pasien mengaku semalam tidur terlalu larut dan pagi ini langsung beraktivitas tanpa sarapan.'
+                ],
+                medication: 'Paracetamol 3x500mg, Vitamin B Complex 1x1 tablet',
+                nonMedication: 'Istirahat cukup, tidur teratur 7-8 jam, kurangi menatap layar HP/komputer terlalu lama, minum air putih cukup',
+                prognosis: 'Bonam (Baik)'
+            },
+            mual: {
+                name: 'Mual',
+                diagnosis: 'Nausea (R11.0)',
+                complaints: [
+                    'Mual, perut tidak enak',
+                    'Eneg, perut terasa mual',
+                    'Mual-mual, perut tidak nyaman',
+                    'Perut mual, terasa eneg',
+                    'Mual terus, perut tidak enak'
+                ],
+                anamnesa: [
+                    'Pasien mengeluh mual sejak pagi ini, perut terasa tidak enak. Tidak ada muntah. BAB normal. Tidak ada demam. Pasien mengaku semalam makan makanan bersantan yang cukup banyak.',
+                    'Pasien mengeluh perut mual sejak kemarin sore, terasa eneg dan tidak nyaman. Tidak muntah. BAB lancar. Tidak demam. Pasien mengaku makan gorengan dan makanan berminyak kemarin cukup banyak.',
+                    'Pasien mengeluh mual sejak tadi pagi, perut terasa tidak enak dan eneg. Tidak ada muntah atau diare. Tidak demam. Pasien mengaku makan terlalu kenyang semalam dan langsung tidur.',
+                    'Pasien mengeluh perut mual sejak pagi ini, terasa tidak nyaman di perut. Tidak muntah. BAB normal. Tidak ada demam. Keluhan muncul setelah pasien minum kopi dalam keadaan perut kosong pagi tadi.',
+                    'Pasien mengeluh mual sejak kemarin malam, perut terasa eneg terus. Tidak ada muntah atau diare. Tidak demam. Pasien mengaku makan makanan pedas dan asam kemarin malam.'
+                ],
+                medication: 'Domperidon 3x10mg (sebelum makan), Antasida tablet 3x1',
+                nonMedication: 'Makan dalam porsi kecil tapi sering, hindari makanan bersantan dan berlemak, minum air putih hangat sedikit-sedikit',
+                prognosis: 'Bonam (Baik)'
+            },
+            pegal_linu: {
+                name: 'Pegal Linu',
+                diagnosis: 'Myalgia (M79.1)',
+                complaints: [
+                    'Badan pegal-pegal, nyeri otot',
+                    'Pegal linu, badan terasa kaku',
+                    'Nyeri otot, badan pegal semua',
+                    'Badan kaku dan pegal, nyeri otot',
+                    'Pegal-pegal di badan, otot terasa sakit'
+                ],
+                anamnesa: [
+                    'Pasien mengeluh badan terasa pegal-pegal terutama di bagian punggung dan lengan sejak kemarin. Nyeri otot ringan. Tidak ada demam. Pasien mengaku kemarin membantu mengangkat barang-barang berat saat pindahan rumah tetangga.',
+                    'Pasien mengeluh pegal linu di seluruh badan sejak kemarin sore, terutama di punggung, paha dan betis. Badan terasa kaku. Tidak demam. Pasien mengaku kemarin olahraga lari cukup lama setelah lama tidak berolahraga.',
+                    'Pasien mengeluh badan pegal semua sejak kemarin, terutama di leher, bahu dan punggung. Nyeri otot ringan saat digerakkan. Tidak ada demam. Pasien mengaku duduk di posisi yang salah saat bekerja kemarin seharian.',
+                    'Pasien mengeluh badan terasa kaku dan pegal sejak tadi pagi, terutama di lengan dan kaki. Nyeri otot ringan. Tidak demam. Pasien mengaku kemarin berkebun dan mencangkul cukup lama.',
+                    'Pasien mengeluh pegal-pegal di badan sejak kemarin malam, terutama punggung dan pinggang terasa sakit. Tidak ada demam. Pasien mengaku kemarin naik motor perjalanan jauh dengan posisi duduk yang tidak nyaman.'
+                ],
+                medication: 'Paracetamol 3x500mg, Vitamin B1, B6, B12 2x1 tablet',
+                nonMedication: 'Istirahat cukup, hindari aktivitas berat dulu, kompres hangat di bagian yang pegal, pijat ringan',
+                prognosis: 'Bonam (Baik)'
+            },
+            gatal: {
+                name: 'Gatal-gatal Ringan',
+                diagnosis: 'Pruritus (L29.9)',
+                complaints: [
+                    'Gatal di lengan, muncul bentol merah kecil',
+                    'Gatal-gatal, ada bintik merah',
+                    'Kulit gatal, muncul bentol kecil',
+                    'Gatal di tangan dan kaki, ada ruam merah',
+                    'Gatal terutama malam, muncul bentol'
+                ],
+                anamnesa: [
+                    'Pasien mengeluh gatal di lengan kanan dan kiri sejak kemarin sore. Muncul bentol-bentol merah kecil. Gatal terutama malam hari. Tidak ada demam. Pasien mengaku digigit nyamuk banyak kemarin sore saat di kebun.',
+                    'Pasien mengeluh gatal-gatal di tangan sejak kemarin, muncul bintik-bintik merah kecil. Gatal terutama saat malam. Tidak demam. Pasien mengaku kemarin memegang tanaman di kebun yang mungkin menyebabkan iritasi.',
+                    'Pasien mengeluh kulit gatal sejak 2 hari lalu, muncul bentol kecil merah di lengan dan punggung tangan. Gatal bertambah saat malam. Tidak ada demam. Pasien mengaku kemarin bermain di lapangan rumput dan digigit serangga.',
+                    'Pasien mengeluh gatal di tangan dan kaki sejak kemarin malam, ada ruam merah kecil-kecil. Gatal cukup mengganggu tidur. Tidak demam. Pasien mengaku kemarin sore bersih-bersih rumah dan terpapar banyak debu.',
+                    'Pasien mengeluh gatal terutama malam hari sejak 2 hari lalu, muncul bentol-bentol kecil di lengan. Tidak ada demam. Pasien mengaku tidur di kasur yang lama tidak dipakai dan mungkin ada tungau.'
+                ],
+                medication: 'Cetirizine 1x10mg (malam hari), Salep calamine 2-3x oles',
+                nonMedication: 'Hindari menggaruk, jaga kebersihan kulit, gunakan lotion anti nyamuk saat keluar rumah, kompres dingin bila gatal',
+                prognosis: 'Bonam (Baik)'
+            },
+            masuk_angin: {
+                name: 'Masuk Angin',
+                diagnosis: 'Malaise and Fatigue (R53)',
+                complaints: [
+                    'Perut kembung, badan tidak enak, sedikit meriang',
+                    'Masuk angin, perut kembung, badan lemas',
+                    'Badan tidak enak, perut begah, meriang',
+                    'Perut kembung, badan pegal, meriang ringan',
+                    'Tidak enak badan, perut kembung, agak meriang'
+                ],
+                anamnesa: [
+                    'Pasien mengeluh perut kembung, badan terasa tidak enak dan sedikit meriang sejak tadi pagi. Sering bersendawa. Tidak ada demam tinggi. Tidak ada batuk pilek. Pasien mengaku semalam kehujanan saat pulang kerja.',
+                    'Pasien mengeluh masuk angin sejak kemarin malam, perut terasa kembung dan badan lemas. Meriang ringan. Sering bersendawa dan kentut. Tidak demam tinggi. Pasien mengaku kemarin seharian di ruangan AC dingin.',
+                    'Pasien mengeluh badan tidak enak sejak tadi pagi, perut begah dan kembung. Meriang ringan. Badan terasa pegal sedikit. Tidak demam tinggi. Pasien mengaku semalam tidur kena angin kipas langsung.',
+                    'Pasien mengeluh perut kembung dan badan pegal sejak kemarin sore. Meriang ringan, badan tidak enak. Sering bersendawa. Tidak demam. Pasien mengaku kemarin kehujanan dan kedinginan saat perjalanan.',
+                    'Pasien mengeluh tidak enak badan sejak pagi ini, perut terasa kembung dan meriang. Badan agak lemas. Sering sendawa. Tidak demam tinggi. Pasien mengaku semalam minum es banyak dan kena angin.'
+                ],
+                medication: 'Paracetamol 3x500mg, Antasida tablet 3x1, Minyak angin (untuk dioleskan)',
+                nonMedication: 'Istirahat cukup, minum air hangat, hindari angin dan hujan, kompres hangat',
+                prognosis: 'Bonam (Baik)'
+            },
+            mata_merah: {
+                name: 'Mata Merah',
+                diagnosis: 'Konjungtivitis (H10.9)',
+                complaints: [
+                    'Mata merah, gatal, berair',
+                    'Mata merah sebelah, terasa perih dan gatal',
+                    'Mata merah dan gatal, sedikit berair',
+                    'Mata merah, gatal, keluar air mata',
+                    'Mata merah dan perih, gatal ringan'
+                ],
+                anamnesa: [
+                    'Pasien mengeluh mata kanan merah, gatal dan berair sejak kemarin. Tidak ada nyeri. Penglihatan masih normal. Tidak ada kotoran mata yang banyak. Pasien mengaku mata kemasukan debu saat berkendara motor tanpa helm kemarin.',
+                    'Pasien mengeluh mata kiri merah sejak 2 hari lalu, terasa perih dan gatal. Sedikit berair. Penglihatan normal. Tidak ada kotoran. Pasien mengaku kena percikan air sabun saat mencuci baju kemarin.',
+                    'Pasien mengeluh mata kanan merah dan gatal sejak kemarin sore. Sedikit berair terutama pagi hari. Tidak ada nyeri atau gangguan penglihatan. Pasien mengaku tidur larut dan sering mengucek mata.',
+                    'Pasien mengeluh kedua mata merah dan gatal sejak kemarin. Keluar air mata terus. Tidak ada nyeri atau kotoran berlebih. Penglihatan baik. Pasien mengaku terpapar asap dan debu saat di jalan kemarin.',
+                    'Pasien mengeluh mata kanan merah dan terasa perih sejak tadi pagi. Gatal ringan dan sedikit berair. Penglihatan normal. Tidak ada kotoran. Pasien mengaku mata kemasukan bulu mata tadi pagi.'
+                ],
+                medication: 'Tetes mata Cendo Xitrol 4x1 tetes (mata yang sakit), Cetirizine 1x10mg (bila gatal)',
+                nonMedication: 'Jangan mengucek mata, jaga kebersihan mata, kompres dengan air bersih, gunakan helm saat berkendara, hindari paparan debu',
+                prognosis: 'Bonam (Baik)'
+            }
+        };
+
+        let currentRecord = null;
+
+        // Add event listeners for disease selection
+        document.querySelectorAll('.disease-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const diseaseKey = this.getAttribute('data-disease');
+                document.getElementById('diseaseSelect').value = diseaseKey;
+                
+                // Update selected disease display
+                const disease = diseases[diseaseKey];
+                document.getElementById('selectedDisease').innerHTML = `
+                    <div class="flex items-center justify-center">
+                        <div class="disease-icon ${getDiseaseColor(diseaseKey)} mr-2">
+                            <i class="${getDiseaseIcon(diseaseKey)}"></i>
+                        </div>
+                        <div>
+                            <span class="font-semibold">${disease.name}</span>
+                            <p class="text-xs">${disease.diagnosis}</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Remove active class from all options
+                document.querySelectorAll('.disease-option').forEach(opt => {
+                    opt.querySelector('div').classList.remove('bg-indigo-100', 'border-indigo-300');
+                });
+                
+                // Add active class to selected option
+                this.querySelector('div').classList.add('bg-indigo-100', 'border-indigo-300');
+            });
+        });
+
+        function getDiseaseColor(diseaseKey) {
+            const colors = {
+                dispepsia: 'bg-red-100',
+                demam: 'bg-orange-100',
+                batuk: 'bg-blue-100',
+                pilek: 'bg-cyan-100',
+                sakit_kepala: 'bg-purple-100',
+                mual: 'bg-yellow-100',
+                pegal_linu: 'bg-green-100',
+                gatal: 'bg-pink-100',
+                masuk_angin: 'bg-indigo-100',
+                mata_merah: 'bg-teal-100'
+            };
+            return colors[diseaseKey] || 'bg-gray-100';
+        }
+
+        function getDiseaseIcon(diseaseKey) {
+            const icons = {
+                dispepsia: 'fas fa-stomach text-red-600',
+                demam: 'fas fa-thermometer-half text-orange-600',
+                batuk: 'fas fa-lungs text-blue-600',
+                pilek: 'fas fa-wind text-cyan-600',
+                sakit_kepala: 'fas fa-head-side-virus text-purple-600',
+                mual: 'fas fa-procedures text-yellow-600',
+                pegal_linu: 'fas fa-running text-green-600',
+                gatal: 'fas fa-allergies text-pink-600',
+                masuk_angin: 'fas fa-cloud-meatball text-indigo-600',
+                mata_merah: 'fas fa-eye text-teal-600'
+            };
+            return icons[diseaseKey] || 'fas fa-question text-gray-600';
+        }
+
+        function generateVitalSigns() {
+            return {
+                consciousness: 'Compos mentis',
+                temperature: (36.5 + Math.random() * 1.5).toFixed(1),
+                height: Math.floor(155 + Math.random() * 20),
+                weight: Math.floor(50 + Math.random() * 25),
+                waist: Math.floor(70 + Math.random() * 20),
+                systolic: Math.floor(110 + Math.random() * 20),
+                diastolic: Math.floor(70 + Math.random() * 15),
+                respiratory: Math.floor(16 + Math.random() * 6),
+                heartRate: Math.floor(70 + Math.random() * 25)
+            };
+        }
+
+        function calculateBMI(weight, height) {
+            const heightInMeters = height / 100;
+            return (weight / (heightInMeters * heightInMeters)).toFixed(1);
+        }
+
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            generateRecord();
+        });
+
+        function generateRecord() {
+            const diseaseKey = document.getElementById('diseaseSelect').value;
+            const visitDate = document.getElementById('visitDate').value;
+
+            if (!diseaseKey) {
+                alert('Pilih penyakit terlebih dahulu!');
+                return;
+            }
+
+            if (!visitDate) {
+                alert('Pilih tanggal kunjungan!');
+                return;
+            }
+
+            // Show loading state
+            const btn = document.getElementById('generateBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+            btn.disabled = true;
+
+            // Simulate processing delay
+            setTimeout(() => {
+                const disease = diseases[diseaseKey];
+                const randomComplaint = disease.complaints[Math.floor(Math.random() * disease.complaints.length)];
+                const randomAnamnesa = disease.anamnesa[Math.floor(Math.random() * disease.anamnesa.length)];
+                const vitalSigns = generateVitalSigns();
+                const bmi = calculateBMI(vitalSigns.weight, vitalSigns.height);
+
+                currentRecord = {
+                    disease: disease.name,
+                    diagnosis: disease.diagnosis,
+                    complaint: randomComplaint,
+                    anamnesa: randomAnamnesa,
+                    medication: disease.medication,
+                    nonMedication: disease.nonMedication,
+                    prognosis: disease.prognosis,
+                    vitalSigns: vitalSigns,
+                    bmi: bmi,
+                    visitDate: visitDate
+                };
+
+                displayRecord();
+                
+                // Reset button
+                btn.innerHTML = '<i class="fas fa-file-medical-alt"></i> Generate Rekam Medis Baru';
+                btn.disabled = false;
+            }, 1000);
+        }
+
+        function displayRecord() {
+            const resultCard = document.getElementById('resultCard');
+            const resultContent = document.getElementById('resultContent');
+
+            resultContent.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-5 rounded-xl">
+                        <h3 class="font-semibold mb-2 flex items-center">
+                            <i class="fas fa-calendar-alt mr-2"></i>Tanggal Kunjungan
+                        </h3>
+                        <p class="text-lg">${currentRecord.visitDate}</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-500 to-cyan-600 text-white p-5 rounded-xl">
+                        <h3 class="font-semibold mb-2 flex items-center">
+                            <i class="fas fa-stethoscope mr-2"></i>Diagnosa
+                        </h3>
+                        <p class="text-lg">${currentRecord.diagnosis}</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-5 rounded-xl">
+                    <h3 class="font-semibold mb-2 flex items-center">
+                        <i class="fas fa-comment-medical mr-2"></i>Keluhan
+                    </h3>
+                    <p class="text-lg">${currentRecord.complaint}</p>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-500 to-teal-600 text-white p-5 rounded-xl">
+                    <h3 class="font-semibold mb-2 flex items-center">
+                        <i class="fas fa-clipboard-list mr-2"></i>Anamnesa
+                    </h3>
+                    <p class="leading-relaxed">${currentRecord.anamnesa}</p>
+                </div>
+
+                <div class="bg-white border border-gray-200 p-5 rounded-xl">
+                    <h3 class="font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-allergies mr-2 text-red-500"></i>Riwayat Alergi
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="text-center p-3 bg-red-50 rounded-lg">
+                            <i class="fas fa-utensils text-red-500 text-xl mb-2"></i>
+                            <p class="text-sm text-gray-600">Makanan</p>
+                            <p class="font-medium text-gray-800">Tidak Ada</p>
+                        </div>
+                        <div class="text-center p-3 bg-blue-50 rounded-lg">
+                            <i class="fas fa-wind text-blue-500 text-xl mb-2"></i>
+                            <p class="text-sm text-gray-600">Udara</p>
+                            <p class="font-medium text-gray-800">Tidak Ada</p>
+                        </div>
+                        <div class="text-center p-3 bg-purple-50 rounded-lg">
+                            <i class="fas fa-pills text-purple-500 text-xl mb-2"></i>
+                            <p class="text-sm text-gray-600">Obat-obatan</p>
+                            <p class="font-medium text-gray-800">Tidak Ada</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-400 to-emerald-600 text-white p-5 rounded-xl">
+                    <h3 class="font-semibold mb-2 flex items-center">
+                        <i class="fas fa-heartbeat mr-2"></i>Prognosa
+                    </h3>
+                    <p class="text-lg">${currentRecord.prognosis}</p>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white p-5 rounded-xl">
+                    <h3 class="font-semibold mb-2 flex items-center">
+                        <i class="fas fa-pills mr-2"></i>Terapi Obat
+                    </h3>
+                    <p class="text-lg">${currentRecord.medication}</p>
+                </div>
+
+                <div class="bg-gradient-to-r from-orange-400 to-red-500 text-white p-5 rounded-xl">
+                    <h3 class="font-semibold mb-2 flex items-center">
+                        <i class="fas fa-hand-holding-heart mr-2"></i>Terapi Non Obat
+                    </h3>
+                    <p class="text-lg">${currentRecord.nonMedication}</p>
+                </div>
+
+                <div class="bg-white border border-gray-200 p-5 rounded-xl">
+                    <h3 class="font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-file-medical-alt mr-2 text-indigo-500"></i>Pemeriksaan Fisik
+                    </h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Kesadaran</p>
+                            <p class="font-medium text-gray-800">${currentRecord.vitalSigns.consciousness}</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Suhu</p>
+                            <p class="font-medium text-gray-800">${currentRecord.vitalSigns.temperature}°C</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Tinggi Badan</p>
+                            <p class="font-medium text-gray-800">${currentRecord.vitalSigns.height} cm</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Berat Badan</p>
+                            <p class="font-medium text-gray-800">${currentRecord.vitalSigns.weight} kg</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Lingkar Perut</p>
+                            <p class="font-medium text-gray-800">${currentRecord.vitalSigns.waist} cm</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">IMT</p>
+                            <p class="font-medium text-gray-800">${currentRecord.bmi} kg/m²</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Tekanan Darah (Sistole)</p>
+                            <p class="font-medium text-gray-800">${currentRecord.vitalSigns.systolic} mmHg</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Tekanan Darah (Diastole)</p>
+                            <p class="font-medium text-gray-800">${currentRecord.vitalSigns.diastolic} mmHg</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Respiratory Rate</p>
+                            <p class="font-medium text-gray-800">${currentRecord.vitalSigns.respiratory} /minute</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Heart Rate</p>
+                            <p class="font-medium text-gray-800">${currentRecord.vitalSigns.heartRate} bpm</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white border border-gray-200 p-5 rounded-xl">
+                        <h3 class="font-semibold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-car-crash mr-2 text-yellow-500"></i>Kasus KLL
+                        </h3>
+                        <p class="text-gray-700">Tidak</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 p-5 rounded-xl">
+                        <h3 class="font-semibold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-home mr-2 text-green-500"></i>Status Pulang
+                        </h3>
+                        <p class="text-gray-700">Berobat Jalan</p>
+                    </div>
+                </div>
+            `;
+
+            resultCard.classList.remove('hidden');
+            resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function downloadRecord() {
+            if (!currentRecord) return;
+
+            const content = `
+REKAM MEDIS PASIEN
+===========================================
+
+Faskes Pelayanan: MANDREHE (04990002)
+Jenis Kunjungan: Kunjungan Sakit
+Perawatan: Rawat Jalan
+Poli: POLI UMUM
+Tanggal Kunjungan: ${currentRecord.visitDate}
+
+KELUHAN:
+${currentRecord.complaint}
+
+ANAMNESA:
+${currentRecord.anamnesa}
+
+RIWAYAT ALERGI:
+- Makanan: Tidak Ada
+- Udara: Tidak Ada
+- Obat-obatan: Tidak Ada
+
+DIAGNOSA:
+${currentRecord.diagnosis}
+
+PROGNOSA:
+${currentRecord.prognosis}
+
+TERAPI OBAT:
+${currentRecord.medication}
+
+TERAPI NON OBAT:
+${currentRecord.nonMedication}
+
+BMHP: -
+
+PEMERIKSAAN FISIK:
+- Kesadaran: ${currentRecord.vitalSigns.consciousness}
+- Suhu: ${currentRecord.vitalSigns.temperature}°C
+- Tinggi Badan: ${currentRecord.vitalSigns.height} cm
+- Berat Badan: ${currentRecord.vitalSigns.weight} kg
+- Lingkar Perut: ${currentRecord.vitalSigns.waist} cm
+- IMT: ${currentRecord.bmi} kg/m²
+- Tekanan Darah: ${currentRecord.vitalSigns.systolic}/${currentRecord.vitalSigns.diastolic} mmHg
+- Respiratory Rate: ${currentRecord.vitalSigns.respiratory} /minute
+- Heart Rate: ${currentRecord.vitalSigns.heartRate} bpm
+
+Kasus KLL: Tidak
+Status Pulang: Berobat Jalan
+
+===========================================
+Generated by Medical Record Generator - Faskes MANDREHE
+            `;
+
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Rekam_Medis_${currentRecord.disease.replace(/\s+/g, '_')}_${currentRecord.visitDate}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        function printRecord() {
+            if (!currentRecord) return;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Rekam Medis - ${currentRecord.disease}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+                        .section { margin-bottom: 15px; }
+                        .section-title { font-weight: bold; margin-bottom: 5px; border-bottom: 1px solid #ccc; padding-bottom: 3px; }
+                        .footer { margin-top: 30px; text-align: center; font-size: 12px; color: #666; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>REKAM MEDIS PASIEN</h1>
+                        <p>Faskes Pelayanan: MANDREHE (04990002) | Poli: POLI UMUM</p>
+                        <p>Tanggal Kunjungan: ${currentRecord.visitDate}</p>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">KELUHAN</div>
+                        <div>${currentRecord.complaint}</div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">ANAMNESA</div>
+                        <div>${currentRecord.anamnesa}</div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">RIWAYAT ALERGI</div>
+                        <div>Makanan: Tidak Ada | Udara: Tidak Ada | Obat-obatan: Tidak Ada</div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">DIAGNOSA</div>
+                        <div>${currentRecord.diagnosis}</div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">PROGNOSA</div>
+                        <div>${currentRecord.prognosis}</div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">TERAPI OBAT</div>
+                        <div>${currentRecord.medication}</div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">TERAPI NON OBAT</div>
+                        <div>${currentRecord.nonMedication}</div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">PEMERIKSAAN FISIK</div>
+                        <div>
+                            Kesadaran: ${currentRecord.vitalSigns.consciousness}<br>
+                            Suhu: ${currentRecord.vitalSigns.temperature}°C<br>
+                            Tinggi Badan: ${currentRecord.vitalSigns.height} cm<br>
+                            Berat Badan: ${currentRecord.vitalSigns.weight} kg<br>
+                            Lingkar Perut: ${currentRecord.vitalSigns.waist} cm<br>
+                            IMT: ${currentRecord.bmi} kg/m²<br>
+                            Tekanan Darah: ${currentRecord.vitalSigns.systolic}/${currentRecord.vitalSigns.diastolic} mmHg<br>
+                            Respiratory Rate: ${currentRecord.vitalSigns.respiratory} /minute<br>
+                            Heart Rate: ${currentRecord.vitalSigns.heartRate} bpm
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">INFORMASI TAMBAHAN</div>
+                        <div>Kasus KLL: Tidak | Status Pulang: Berobat Jalan</div>
+                    </div>
+                    
+                    <div class="footer">
+                        <p>Generated by Medical Record Generator - Faskes MANDREHE</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+</body>
+</html>
